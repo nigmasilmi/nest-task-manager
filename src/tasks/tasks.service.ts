@@ -33,7 +33,6 @@ export class TasksService {
     if (result.affected === 0) {
       throw new NotFoundException('The record was not found');
     }
-    console.log(result);
   }
   async updateTaskStatus(
     id: string,
