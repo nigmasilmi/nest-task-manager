@@ -24,8 +24,11 @@ export class TasksController {
   constructor(private taskService: TasksService) {}
 
   @Get()
-  getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
-    return this.taskService.getTasks(filterDto);
+  getTasks(
+    @Query() filterDto: GetTasksFilterDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    return this.taskService.getTasks(filterDto, user);
   }
   @Post()
   createTask(
@@ -36,20 +39,22 @@ export class TasksController {
   }
 
   @Get('/:id')
-  getTask(@Param('id') taskId): Promise<Task> {
-    return this.taskService.getTask(taskId);
+  getTask(@Param('id') taskId, @GetUser() user: User): Promise<Task> {
+    return this.taskService.getTask(taskId, user);
   }
+
   @Delete('/:id')
-  deleteTask(@Param('id') taskId): Promise<void> {
-    return this.taskService.deleteTask(taskId);
+  deleteTask(@Param('id') taskId, @GetUser() user: User): Promise<void> {
+    return this.taskService.deleteTask(taskId, user);
   }
 
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') taskId,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @GetUser() user: User,
   ): Promise<Task> {
     const { status } = updateTaskStatusDto;
-    return this.taskService.updateTaskStatus(taskId, status);
+    return this.taskService.updateTaskStatus(taskId, status, user);
   }
 }
